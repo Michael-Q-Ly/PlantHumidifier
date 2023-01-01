@@ -9,6 +9,9 @@
 
 #include "DHT.h"
 
+/*-----------------------------------------------------------------------------
+ * DHT Set up 
+ *-----------------------------------------------------------------------------*/
 #define DHTPIN 2     // Digital pin connected to the DHT sensor
 // Feather HUZZAH ESP8266 note: use pins 3, 4, 5, 12, 13 or 14 --
 // Pin 15 can work but DHT must be disconnected during program upload.
@@ -32,11 +35,38 @@
 // as the current DHT reading algorithm adjusts itself to work on faster procs.
 DHT dht(DHTPIN, DHTTYPE);
 
+/*-----------------------------------------------------------------------------
+ *  OLED Screen Set up
+ *-----------------------------------------------------------------------------*/
+#include <SPI.h>
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+
+#define SCREEN_WIDTH		128
+#define SCREEN_HEIGHT		64
+#define OLED_ADDR		0x3C
+
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT) ;
+
 void setup() {
 	Serial.begin(115200);
-	Serial.println(F("DHTxx test!"));
 
+	Serial.println(F("DHTxx test!"));
 	dht.begin();
+
+	Serial.println("SSD1306 test!") ;
+	display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR) ;
+	display.clearDisplay() ;
+	
+	display.setTextSize(1) ;
+	display.setTextColor(WHITE) ;
+	display.setCursor(0,0) ;
+	display.println("Hello, World!") ;
+
+	display.display() ;
+	
+	delay(5000) ;
 }
 
 void loop() {
