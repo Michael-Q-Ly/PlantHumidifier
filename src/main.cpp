@@ -43,14 +43,21 @@ DHT dht(DHTPIN, DHTTYPE);
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 
-#define SCREEN_WIDTH		128
-#define SCREEN_HEIGHT		64
-#define OLED_ADDR		0x3C
+#define BAUD_RATE			115200
+
+#define SCREEN_WIDTH			128
+#define SCREEN_HEIGHT			64
+#define OLED_ADDR			0x3C
+
+#define uS_TO_S				1000
+#define TIME_BETWEEN_MEASURE		(10 * uS_TO_S)
+#define TIME_BETWEEN_FAILED_MEASURE	(2 * uS_TO_S)
+#define DISPLAY_WELCOME_TIME		(5 * uS_TO_S)
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT) ;
 
 void setup() {
-	Serial.begin(115200);
+	Serial.begin(BAUD_RATE) ;
 
 	Serial.println(F("DHTxx test!"));
 	dht.begin();
@@ -59,48 +66,66 @@ void setup() {
 	display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR) ;
 	display.clearDisplay() ;
 	
-	display.setTextSize(1) ;
+	display.setTextSize(3) ;
 	display.setTextColor(WHITE) ;
 	display.setCursor(0,0) ;
-	display.println("Hello, World!") ;
+	display.println("DHT22\nClock") ;
 
 	display.display() ;
 	
-	delay(5000) ;
+	delay(DISPLAY_WELCOME_TIME) ;
 }
 
 void loop() {
+	display.clearDisplay() ;
+
+	display.setTextSize(2) ;
+	display.setTextColor(WHITE) ;
+	display.setCursor(0,0) ;
+
 	// Wait a few seconds between measurements.
-	delay(2000);
 
 	// Reading temperature or humidity takes about 250 milliseconds!
 	// Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
-	float h = dht.readHumidity();
+	float humidity = dht.readHumidity() ;
+
 	// Read temperature as Celsius (the default)
-	float t = dht.readTemperature();
+	float temp_c = dht.readTemperature() ;
+
 	// Read temperature as Fahrenheit (isFahrenheit = true)
-	float f = dht.readTemperature(true);
+	float temp_f = dht.readTemperature(true) ;
 
 	// Check if any reads failed and exit early (to try again).
-	if (isnan(h) || isnan(t) || isnan(f)) {
-		Serial.println(F("Failed to read from DHT sensor!"));
+	if (isnan(humidity) || isnan(temp_c) || isnan(temp_f)) {
+		Serial.println(F("Failed to read from DHT sensor!")) ;
+		delay(TIME_BETWEEN_FAILED_MEASURE) ;
 	return;
 	}
 
 	// Compute heat index in Fahrenheit (the default)
-	float hif = dht.computeHeatIndex(f, h);
+	float heat_index_f = dht.computeHeatIndex(temp_f, humidity) ;
 	// Compute heat index in Celsius (isFahreheit = false)
-	float hic = dht.computeHeatIndex(t, h, false);
+	float heat_index_c = dht.computeHeatIndex(temp_c, humidity, false);
 
-	Serial.print(F("Humidity: "));
-	Serial.print(h);
-	Serial.print(F("%  Temperature: "));
-	Serial.print(t);
-	Serial.print(F("°C "));
-	Serial.print(f);
-	Serial.print(F("°F  Heat index: "));
-	Serial.print(hic);
-	Serial.print(F("°C "));
-	Serial.print(hif);
-	Serial.println(F("°F"));
+	display.print("H: ") ;
+	display.print(humidity) ;
+	display.println("%") ;
+
+	display.print("T: ") ;
+	/* display.print(temp_c) ; */
+	/* display.println("C ") ; */
+
+	display.print(temp_f);
+	display.println("F\n") ;
+
+	display.print("Idx: ") ;
+	/* display.print(heat_index_c) ; */
+	/* display.println("C ") ; */
+
+	display.print(heat_index_f) ;
+	display.println("F") ;
+
+	display.display() ;
+
+	delay(TIME_BETWEEN_MEASURE);
 }
