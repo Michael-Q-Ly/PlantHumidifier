@@ -56,6 +56,12 @@ DHT dht(DHTPIN, DHTTYPE);
 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT) ;
 
+
+/*-----------------------------------------------------------------------------
+ * Water Atomizer 
+ *-----------------------------------------------------------------------------*/
+#define ATOMIZER_PIN			15
+
 void setup() {
 	Serial.begin(BAUD_RATE) ;
 
@@ -74,9 +80,13 @@ void setup() {
 	display.display() ;
 	
 	delay(DISPLAY_WELCOME_TIME) ;
+
+	pinMode(ATOMIZER_PIN, OUTPUT) ;
 }
 
 void loop() {
+	bool humidifier_fired = false ;
+	uint8_t humidity_threshold = 70 ;
 	display.clearDisplay() ;
 
 	display.setTextSize(2) ;
@@ -125,5 +135,17 @@ void loop() {
 
 	display.display() ;
 
-	delay(TIME_BETWEEN_MEASURE);
+	// TODO: Case statements. If humidity is less than 50, do 10s. If 60, 5s. 70 = 3s
+	if (humidity < humidity_threshold) {
+		humidifier_fired = true ;
+		digitalWrite(ATOMIZER_PIN, HIGH) ;
+		humidity = digitalRead(ATOMIZER_PIN) ;
+		delay(TIME_BETWEEN_MEASURE) ;
+		digitalWrite(ATOMIZER_PIN, LOW) ;
+	}
+
+	if (!humidifier_fired) {
+		delay(TIME_BETWEEN_MEASURE);
+	}
+	humidifier_fired = false ;
 }
