@@ -18,8 +18,10 @@
 #ifndef DHTXX_HPP
 #define DHTXX_HPP
 #include "main.hpp"
-
 #include "DHT.h"
+
+#define HUMIDITY_LOWER_THRESHOLD	0
+#define HUMIDITY_UPPER_THRESHOLD	100
 
 bool verify_dht_read(float humidity, float temp) ;
 

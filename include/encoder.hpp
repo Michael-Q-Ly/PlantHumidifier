@@ -31,5 +31,7 @@ struct s_encoder {
 	uint8_t a_previous_position ;
 } ;
 
+/* void reset_humidity_set_point(float &humidity_set_point) ; */
+/* void update_humidity_set_point(bool &turned_CW, bool &last_was_CW, bool &turned_CCW, bool &last_was_CCW, float &humidity_set_point) ; */
 
 #endif /* ENCODER_HPP */
