@@ -37,7 +37,7 @@ DHT dht(DHT_PIN, DHTTYPE);
 #define OLED_ADDR			0x3C
 
 #define uS_TO_S				1000
-#define TIME_BETWEEN_MEASURE		(10 * uS_TO_S)
+#define TIME_BETWEEN_MEASURE		(1 * uS_TO_S)
 #define TIME_BETWEEN_FAILED_MEASURE	(2 * uS_TO_S)
 #define DISPLAY_WELCOME_TIME		(5 * uS_TO_S)
 
@@ -55,21 +55,36 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT) ;
 #define ENCODER_A_PIN			14
 #define ENCODER_B_PIN			12
 
+float humidity_set_point    = 60 ;
+
+enum e_encoder_switch_state {
+	ENCODER_SWITCH_ON  = LOW ,
+	ENCODER_SWITCH_OFF = HIGH
+} ;
+
+struct s_encoder {
+	uint8_t press_count ;
+	e_encoder_switch_state pressed ;
+	uint8_t a_current_position ;
+	uint8_t a_previous_position ;
+} ;
+
+s_encoder encoder {0, ENCODER_SWITCH_OFF} ;
+
 /*-----------------------------------------------------------------------------
  * Function prototypes 
  *-----------------------------------------------------------------------------*/
+
 void display_oled_welcome(void) ;
 void display_oled(float humidity, float temp, float humidity_set_point) ;
 bool verify_dht_read(float humidity, float temp) ;
+void setup_oled(void) ;
 
-float humidity_set_point = 70 ;
-uint8_t encoder_a_current_state ;
-uint8_t encoder_a_previous_state ;
+IRAM_ATTR void ISR_encoder(void) ;
 
 void setup() {
 	Serial.begin(BAUD_RATE) ;
 
-	pinMode(ENCODER_SW_PIN, INPUT_PULLUP) ;
 	pinMode(ENCODER_A_PIN,  INPUT_PULLUP) ;
 	pinMode(ENCODER_B_PIN,  INPUT_PULLUP) ;
 	pinMode(ATOMIZER_PIN,   OUTPUT) ;
@@ -79,39 +94,16 @@ void setup() {
 
 	display_oled_welcome() ;
 	
-	encoder_a_previous_state = digitalRead(ENCODER_A_PIN) ;
+	encoder.pressed = (e_encoder_switch_state)digitalRead(ENCODER_A_PIN) ;
 	// TODO: Attach an interrupt for encoder button
+	attachInterrupt(digitalPinToInterrupt(ENCODER_SW_PIN), ISR_encoder, RISING) ;
 }
 
 void loop() {
-	// Flags
+	/* // Flags */
 	bool humidifier_fired          = false ;
-	bool humidity_set_point_config = false ;
-	bool encoder_pressed           = false ;
-
-	display.clearDisplay() ;
-	display.setTextSize(2) ;
-	display.setTextColor(WHITE) ;
-	display.setCursor(0,0) ;
-
-	// TODO: make interrupt to set encoder flag
-	// The interrupt will increment an encoder counter and set the flag.
-	// the screen will then set to change the humidity set point
-	// If the user presses the encoder again, the interrupt will increment
-	// the counter, and if it is even, it resets the counter to zero. This
-	// will prevent overflow for unsigned ints
-	// When the number of times the button is pressed is even, the screen will
-	// return to normal.
-	// If the user does not do anything within 5 seconds, a timer will expire and
-	// return the user to the normal screen.
-#ifdef later
-	if (encoder_pressed) {
-		// TODO: Will these variables ONLY stay in this scope?
-		encoder_a_current_state = digitalRead(ENCODER_A_PIN) ;
+	/* bool humidity_set_point_config = false ; */
 	
-	}
-#endif /* later */
-
 	// Reading temperature or humidity takes about 250 milliseconds!
 	// Sensor readings may also be up to 2 seconds 'old' (its a very slow sensor)
 	float humidity = dht.readHumidity() ;
@@ -124,19 +116,59 @@ void loop() {
 		return ;
 	}
 
-	display_oled(humidity, temp_f, humidity_set_point) ;
+	/* encoder.a_current_position = digitalRead(ENCODER_A_PIN) ; */
+#ifdef later
+	// TODO: make interrupt to set encoder flag
+	// The interrupt will increment an encoder counter and set the flag.
+	// the screen will then set to change the humidity set point
+	// If the user presses the encoder again, the interrupt will increment
+	// the counter, and if it is even, it resets the counter to zero. This
+	// will prevent overflow for unsigned ints
+	// When the number of times the button is pressed is even, the screen will
+	// return to normal.
+	// If the user does not do anything within 5 seconds, a timer will expire and
+	// return the user to the normal screen.
+#endif /* later */
+	// if encoder pressed or 5 second timer goes off
+	/* if (encoder.pressed == ENCODER_SWITCH_ON) { */
 
-	// TODO: Case statements. If humidity is less than 50, do 10s. If 60, 5s. 70 = 3s
+	/* while (encoder.pressed == ENCODER_SWITCH_ON) { */
+		/* if (!encoder.press_count % 2) { */
+		/* 	break ; */
+		/* } */
+		/* Serial.println("Encoder pressed") ; */
+		/* Serial.print("Pressed ") ; */
+		/* Serial.print(encoder.press_count) ; */
+		/* Serial.println(" times") ; */
+		encoder.a_current_position = digitalRead(ENCODER_A_PIN) ;
+		if (encoder.a_previous_position != encoder.a_current_position) {
+			if (digitalRead(ENCODER_B_PIN) != encoder.a_previous_position) {
+				humidity_set_point++ ;
+			}
+			else {
+				humidity_set_point-- ;
+			}
+		}
+		setup_oled() ;
+		// TODO: Will these variables ONLY stay in this scope?
+		display_oled(humidity, temp_f, humidity_set_point) ;
+		encoder.a_previous_position = encoder.a_current_position ;
+
+	/* } */
+
+/* 	display_oled(humidity, temp_f, humidity_set_point) ; */
+
+/* 	// TODO: Case statements. If humidity is less than 50, do 10s. If 60, 5s. 70 = 3s */
 	if (humidity < humidity_set_point) {
 		humidifier_fired = true ;
 		digitalWrite(ATOMIZER_PIN, HIGH) ;
 		humidity = digitalRead(ATOMIZER_PIN) ;
-		delay(TIME_BETWEEN_MEASURE) ;
+		/* delay(TIME_BETWEEN_MEASURE) ; */
 		digitalWrite(ATOMIZER_PIN, LOW) ;
 	}
 
 	if (!humidifier_fired) {
-		delay(TIME_BETWEEN_MEASURE);
+		/* delay(TIME_BETWEEN_MEASURE); */
 	}
 	humidifier_fired = false ;
 }
@@ -194,6 +226,18 @@ void display_oled_welcome(void) {
 
 /* ----------------------------------------------------------------------------*/
 /**
+ * @brief			Sets up OLED text size, position, and color
+ */
+/* ------------------------------------------------------------------------------------*/
+void setup_oled(void) {
+	display.clearDisplay() ;
+	display.setTextSize(2) ;
+	display.setTextColor(WHITE) ;
+	display.setCursor(0,0) ;
+}
+
+/* ----------------------------------------------------------------------------*/
+/**
  * @brief			Verify if the DHT sensor correctly took a reading
  * @param humidity		Current humidity locally
  * @param temp			Current temperature locally (in Fahrenheit)
@@ -209,4 +253,14 @@ bool verify_dht_read(float humidity, float temp) {
 		return false ;
 	}
 	return true ;
+}
+
+/* ----------------------------------------------------------------------------*/
+/**
+ * @brief			ISR for encoder button press
+ */
+/* ------------------------------------------------------------------------------------*/
+void IRAM_ATTR ISR_encoder(void) {
+	encoder.press_count++ ;
+	encoder.pressed = ENCODER_SWITCH_ON ;
 }
