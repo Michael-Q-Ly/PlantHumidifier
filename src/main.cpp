@@ -1,4 +1,6 @@
 #include "main.hpp"
+
+#include "atomizer.hpp"
 #include "dhtxx.hpp"
 #include "encoder.hpp"
 #include "oled.hpp"
@@ -35,7 +37,7 @@ volatile bool last_was_CW  = false ;
 volatile bool last_was_CCW = false ;
 uint32_t debounce_time     = 0 ;
 
-IRAM_ATTR void ISR_check_encoder(void) ;
+void IRAM_ATTR ISR_check_encoder(void) ;
 void reset_humidity_set_point(float humidity_set_point) ;
 void update_humidity_set_point(void) ;
 
@@ -44,15 +46,14 @@ void setup() {
 
 	pinMode(ENCODER_A_PIN,  INPUT_PULLUP) ;
 	pinMode(ENCODER_B_PIN,  INPUT_PULLUP) ;
+	pinMode(ENCODER_SW_PIN, INPUT_PULLUP) ;
 	pinMode(ATOMIZER_PIN,   OUTPUT) ;
 
-	Serial.println("DHTxx test!") ;
 	dht.begin();
 
 	display_oled_welcome() ;
 	
 	encoder.pressed = (e_encoder_switch_state)digitalRead(ENCODER_A_PIN) ;
-	// TODO: Attach an interrupt for encoder button
 	attachInterrupt(digitalPinToInterrupt(ENCODER_B_PIN), ISR_check_encoder, RISING) ;
 }
 
@@ -96,13 +97,11 @@ void loop() {
 	// TODO: Case statements. If humidity is less than 50, do 10s. If 60, 5s. 70 = 3s
 	// TODO: Use non-blocking code like an ISR or millis to display new measurements
 	if (humidity < humidity_set_point) {
-		digitalWrite(ATOMIZER_PIN, HIGH) ;
-		Serial.println("Atomizer on") ;
-		/* delay(TIME_BETWEEN_MEASURE) ; */
+		digitalWrite(ATOMIZER_PIN, ATOMIZER_ON) ;
 		debounce_humidifier = millis() ;
 	}
 	if (millis() - debounce_humidifier > DEBOUNCE_ATOMIZER) {
-		digitalWrite(ATOMIZER_PIN, LOW) ;
+		digitalWrite(ATOMIZER_PIN, ATOMIZER_OFF) ;
 	}
 }
 
@@ -113,6 +112,8 @@ void loop() {
 
 /* ----------------------------------------------------------------------------*/
 /**
+ * @fn				ISR_check_encoder
+ *
  * @brief			ISR for encoder button press
  */
 /* ------------------------------------------------------------------------------------*/
@@ -143,16 +144,8 @@ void IRAM_ATTR ISR_check_encoder(void) {
 
 /* ----------------------------------------------------------------------------*/
 /**
- * @brief			Resets humidity set point to its default value
+ * @fn				update_humidity_set_point
  *
- * @param humidity_set_point	Minimum humidity level before atomizer turns on
- */
-/* ------------------------------------------------------------------------------------*/
-void reset_humidity_set_point(float humidity_set_point) {
-}
-
-/* ----------------------------------------------------------------------------*/
-/**
  * @brief			Update the humidity threshold up or down based off a clockwise
  *				or counter-clockwise movement of the encoder
  *
@@ -169,8 +162,6 @@ void update_humidity_set_point(void) {
 		turned_CW     = false ;
 		last_was_CW   = true ;
 		debounce_time = millis() ;
-		/* setup_oled() ; */
-		/* display_oled(humidity, temp_f, humidity_set_point) ; */
 	}
 
 	if (turned_CCW) {
@@ -178,8 +169,6 @@ void update_humidity_set_point(void) {
 		turned_CCW    = false ;
 		last_was_CCW  = true ;
 		debounce_time = millis() ;
-		/* setup_oled() ; */
-		/* display_oled(humidity, temp_f, humidity_set_point) ; */
 	}
 
 	if (millis() - debounce_time > DEBOUNCE_ENCODER) {
