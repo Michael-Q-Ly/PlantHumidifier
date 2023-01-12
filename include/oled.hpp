@@ -32,6 +32,7 @@
 #define SCREEN_HEIGHT			64
 #define OLED_ADDR			0x3C
 
+void init_oled(void) ;
 void setup_oled(void) ;
 void display_oled_welcome(void) ;
 void display_oled(float humidity, float temp, float humidity_set_point) ;

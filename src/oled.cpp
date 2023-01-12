@@ -21,6 +21,16 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT) ;
 
 /* ----------------------------------------------------------------------------*/
 /**
+ * @brief			Initializes OLED address and clears display
+ */
+/* ------------------------------------------------------------------------------------*/
+void init_oled(void) {
+	display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR) ;
+	display.clearDisplay() ;
+}
+
+/* ----------------------------------------------------------------------------*/
+/**
  * @brief			Sets up OLED text size, position, and color
  */
 /* ------------------------------------------------------------------------------------*/
@@ -37,10 +47,6 @@ void setup_oled(void) {
  */
 /* ------------------------------------------------------------------------------------*/
 void display_oled_welcome(void) {
-	Serial.println("SSD1306 test!") ;
-	display.begin(SSD1306_SWITCHCAPVCC, OLED_ADDR) ;
-	display.clearDisplay() ;
-	
 	display.setTextSize(3) ;
 	display.setTextColor(WHITE) ;
 	display.setCursor(0,0) ;

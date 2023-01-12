@@ -31,18 +31,19 @@ extern Adafruit_SSD1306 display ;
 float humidity_set_point    = DEFAULT_HUMIDITY_SET_POINT ;
 s_encoder encoder {0, ENCODER_SWITCH_OFF} ;
 
-volatile bool turned_CW    = false ;
-volatile bool turned_CCW   = false ;
-volatile bool last_was_CW  = false ;
-volatile bool last_was_CCW = false ;
-uint32_t debounce_time     = 0 ;
+volatile bool turned_CW      = false ;
+volatile bool turned_CCW     = false ;
+volatile bool last_was_CW    = false ;
+volatile bool last_was_CCW   = false ;
+uint32_t debounce_time       = 0 ;
+uint32_t debounce_humidifier = 0 ;
 
 void IRAM_ATTR ISR_check_encoder(void) ;
 void reset_humidity_set_point(float humidity_set_point) ;
 void update_humidity_set_point(void) ;
 
 void setup() {
-	Serial.begin(BAUD_RATE) ;
+	/* Serial.begin(BAUD_RATE) ; */
 
 	pinMode(ENCODER_A_PIN,  INPUT_PULLUP) ;
 	pinMode(ENCODER_B_PIN,  INPUT_PULLUP) ;
@@ -51,7 +52,8 @@ void setup() {
 
 	dht.begin();
 
-	display_oled_welcome() ;
+	init_oled() ;
+	/* display_oled_welcome() ; */
 	
 	encoder.pressed = (e_encoder_switch_state)digitalRead(ENCODER_A_PIN) ;
 	attachInterrupt(digitalPinToInterrupt(ENCODER_B_PIN), ISR_check_encoder, RISING) ;
@@ -93,7 +95,6 @@ void loop() {
 	setup_oled() ;
 	display_oled(humidity, temp_f, humidity_set_point) ;
 
-	uint32_t debounce_humidifier;
 	// TODO: Case statements. If humidity is less than 50, do 10s. If 60, 5s. 70 = 3s
 	// TODO: Use non-blocking code like an ISR or millis to display new measurements
 	if (humidity < humidity_set_point) {
