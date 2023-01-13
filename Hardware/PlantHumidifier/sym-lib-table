@@ -1,0 +1,3 @@
+(sym_lib_table
+  (lib (name "110990030")(type "KiCad")(uri "${KIPRJMOD}/Lib/Seeed_Connectors/110990030.kicad_sym")(options "")(descr ""))
+)
