@@ -1552,7 +1552,7 @@
   (symbol (lib_id "110990030:110990030") (at 205.74 32.766 0) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid f617cd1b-909f-4cbb-bc4d-a14076c52ab4)
-    (property "Reference" "J?" (id 0) (at 212.09 32.7659 0)
+    (property "Reference" "J1" (id 0) (at 212.09 32.7659 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
     (property "Value" "110990030" (id 1) (at 212.09 35.3059 0)
@@ -1674,6 +1674,9 @@
     (path "/2033c85f-5643-443c-9d46-84bb2e6addf0"
       (reference "C2") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0402_1005Metric")
     )
+    (path "/f617cd1b-909f-4cbb-bc4d-a14076c52ab4"
+      (reference "J1") (unit 1) (value "110990030") (footprint "Seeed_Connectors:SEEED_110990030")
+    )
     (path "/b462574f-43c5-4a1a-9527-fc39d017b1e6"
       (reference "J2") (unit 1) (value "Conn_01x05_Female") (footprint "Connector_JST:JST_XH_B5B-XH-A_1x05_P2.50mm_Vertical")
     )
@@ -1682,9 +1685,6 @@
     )
     (path "/9d350f87-3249-4139-b96d-540780875faa"
       (reference "J4") (unit 1) (value "Conn_01x04_Female") (footprint "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical")
-    )
-    (path "/f617cd1b-909f-4cbb-bc4d-a14076c52ab4"
-      (reference "J?") (unit 1) (value "110990030") (footprint "Seeed_Connectors:SEEED_110990030")
     )
     (path "/e7e820f3-59b8-44fe-b769-6d65c3132a62"
       (reference "R1") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0402_1005Metric")
