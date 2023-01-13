@@ -1124,7 +1124,7 @@
     (property "Value" "Conn_01x04_Female" (id 1) (at 201.93 35.3059 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Connector_JST:JST_EH_B4B-EH-A_1x04_P2.50mm_Vertical" (id 2) (at 200.66 32.766 0)
+    (property "Footprint" "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical" (id 2) (at 200.66 32.766 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 200.66 32.766 0)
@@ -1159,7 +1159,7 @@
     (uuid 31337aab-e920-4411-a51b-1ee0c06a79e6)
     (property "Reference" "SW1" (id 0) (at 48.768 90.17 0))
     (property "Value" "SW_SPST" (id 1) (at 48.768 92.71 0))
-    (property "Footprint" "" (id 2) (at 48.768 97.536 0)
+    (property "Footprint" "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS" (id 2) (at 48.768 97.536 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 48.768 97.536 0)
@@ -1411,7 +1411,7 @@
     (property "Value" "Conn_01x05_Female" (id 1) (at 204.47 71.8819 0)
       (effects (font (size 1.27 1.27)) (justify left))
     )
-    (property "Footprint" "Connector_JST:JST_XH_S5B-XH-A_1x05_P2.50mm_Horizontal" (id 2) (at 203.708 70.612 0)
+    (property "Footprint" "Connector_JST:JST_XH_B5B-XH-A_1x05_P2.50mm_Vertical" (id 2) (at 203.708 70.612 0)
       (effects (font (size 1.27 1.27)) hide)
     )
     (property "Datasheet" "~" (id 3) (at 203.708 70.612 0)
@@ -1615,10 +1615,10 @@
       (reference "C2") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0402_1005Metric")
     )
     (path "/2394e559-b98a-40f6-b850-791be34e4734"
-      (reference "J1") (unit 1) (value "Conn_01x04_Female") (footprint "Connector_JST:JST_EH_B4B-EH-A_1x04_P2.50mm_Vertical")
+      (reference "J1") (unit 1) (value "Conn_01x04_Female") (footprint "Connector_JST:JST_PH_B4B-PH-K_1x04_P2.00mm_Vertical")
     )
     (path "/b462574f-43c5-4a1a-9527-fc39d017b1e6"
-      (reference "J2") (unit 1) (value "Conn_01x05_Female") (footprint "Connector_JST:JST_XH_S5B-XH-A_1x05_P2.50mm_Horizontal")
+      (reference "J2") (unit 1) (value "Conn_01x05_Female") (footprint "Connector_JST:JST_XH_B5B-XH-A_1x05_P2.50mm_Vertical")
     )
     (path "/83845b8d-1c62-4450-bceb-8208d6b21664"
       (reference "J3") (unit 1) (value "Conn_01x04_Female") (footprint "Connector_JST:JST_XH_B4B-XH-A_1x04_P2.50mm_Vertical")
@@ -1633,7 +1633,7 @@
       (reference "R2") (unit 1) (value "10k") (footprint "Resistor_SMD:R_0402_1005Metric")
     )
     (path "/31337aab-e920-4411-a51b-1ee0c06a79e6"
-      (reference "SW1") (unit 1) (value "SW_SPST") (footprint "")
+      (reference "SW1") (unit 1) (value "SW_SPST") (footprint "Button_Switch_THT:SW_Tactile_SPST_Angled_PTS645Vx83-2LFS")
     )
     (path "/fb8daade-f4cb-4b21-85db-6e6f772ccb5f"
       (reference "U1") (unit 1) (value "WeMos_D1_mini") (footprint "Module:WEMOS_D1_mini_light")
