@@ -5,9 +5,16 @@
   )
 
   (paper "A4")
+  (title_block
+    (title "Plant Humidifer")
+    (rev "A")
+    (comment 1 "Michael Ly")
+    (comment 2 "Github.com/Michael-Q-Ly")
+  )
+
   (layers
     (0 "F.Cu" signal)
-    (31 "B.Cu" signal)
+    (31 "B.Cu" power)
     (32 "B.Adhes" user "B.Adhesive")
     (33 "F.Adhes" user "F.Adhesive")
     (34 "B.Paste" user)
@@ -38,7 +45,20 @@
   )
 
   (setup
-    (pad_to_mask_clearance 0)
+    (stackup
+      (layer "F.SilkS" (type "Top Silk Screen"))
+      (layer "F.Paste" (type "Top Solder Paste"))
+      (layer "F.Mask" (type "Top Solder Mask") (thickness 0.01))
+      (layer "F.Cu" (type "copper") (thickness 0.035))
+      (layer "dielectric 1" (type "core") (thickness 1.51) (material "FR4") (epsilon_r 4.5) (loss_tangent 0.02))
+      (layer "B.Cu" (type "copper") (thickness 0.035))
+      (layer "B.Mask" (type "Bottom Solder Mask") (thickness 0.01))
+      (layer "B.Paste" (type "Bottom Solder Paste"))
+      (layer "B.SilkS" (type "Bottom Silk Screen"))
+      (copper_finish "None")
+      (dielectric_constraints no)
+    )
+    (pad_to_mask_clearance 0.0508)
     (pcbplotparams
       (layerselection 0x00010fc_ffffffff)
       (disableapertmacros false)
@@ -169,7 +189,7 @@
 
   (footprint "Capacitor_SMD:C_0603_1608Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 33ef9882-a85f-43d4-bb2d-4464d82e455f)
-    (at 106.68 92.075 90)
+    (at 104.2924 94.1324 -90)
     (descr "Capacitor SMD 0603 (1608 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "PlantHumidifier.kicad_sch")
@@ -198,9 +218,9 @@
     (fp_line (start -0.8 0.4) (end -0.8 -0.4) (layer "F.Fab") (width 0.1) (tstamp 947ea7e4-b71c-464e-9064-e804ec1c16fa))
     (fp_line (start 0.8 -0.4) (end 0.8 0.4) (layer "F.Fab") (width 0.1) (tstamp a39a1d49-6dfa-4a36-badc-9dca5c1e0568))
     (fp_line (start 0.8 0.4) (end -0.8 0.4) (layer "F.Fab") (width 0.1) (tstamp c9dfec21-ce0f-40f8-a479-b506adefe836))
-    (pad "1" smd roundrect (at -0.775 0 90) (size 0.9 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
+    (pad "1" smd roundrect (at -0.775 0 270) (size 0.9 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 1 "+5V") (pintype "passive") (tstamp 9eb658e3-8001-4448-ab6d-2a67df7fba8e))
-    (pad "2" smd roundrect (at 0.775 0 90) (size 0.9 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
+    (pad "2" smd roundrect (at 0.775 0 270) (size 0.9 0.95) (layers "F.Cu" "F.Paste" "F.Mask") (roundrect_rratio 0.25)
       (net 2 "GND") (pintype "passive") (tstamp fcb6a189-175c-44fc-b99d-780e33263857))
     (model "${KICAD6_3DMODEL_DIR}/Capacitor_SMD.3dshapes/C_0603_1608Metric.wrl"
       (offset (xyz 0 0 0))
@@ -211,7 +231,7 @@
 
   (footprint "Capacitor_SMD:C_0402_1005Metric" (layer "F.Cu")
     (tedit 5F68FEEE) (tstamp 7ce66632-c0ce-45e9-bd1c-7922eb69b510)
-    (at 104.013 92.047 90)
+    (at 104.2924 90.8304 90)
     (descr "Capacitor SMD 0402 (1005 Metric), square (rectangular) end terminal, IPC_7351 nominal, (Body size source: IPC-SM-782 page 76, https://www.pcb-3d.com/wordpress/wp-content/uploads/ipc-sm-782a_amendment_1_and_2.pdf), generated with kicad-footprint-generator")
     (tags "capacitor")
     (property "Sheetfile" "PlantHumidifier.kicad_sch")
