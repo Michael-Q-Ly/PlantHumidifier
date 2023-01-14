@@ -47,10 +47,17 @@ void setup_oled(void) {
  */
 /* ------------------------------------------------------------------------------------*/
 void display_oled_welcome(void) {
-	display.setTextSize(3) ;
+	display.setTextSize(2) ;
 	display.setTextColor(WHITE) ;
 	display.setCursor(0,0) ;
-	display.println("DHT22\nClock") ;
+	display.println() ;
+	display.setTextSize(1) ;
+	display.setCursor(12,15) ;
+	display.print("mini") ;
+	display.setTextSize(2) ;
+	display.setCursor(35,10) ;
+	display.println(" Plant") ;
+	display.println("Humidifier") ;
 
 #ifdef later
 	display.setTextSize(1) ;

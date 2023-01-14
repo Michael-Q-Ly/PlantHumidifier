@@ -49,7 +49,7 @@ void setup() {
 	dht.begin();
 
 	init_oled() ;
-	/* display_oled_welcome() ; */
+	display_oled_welcome() ;
 	
 	attachInterrupt(digitalPinToInterrupt(ENCODER_B_PIN), ISR_check_encoder, RISING) ;
 }
