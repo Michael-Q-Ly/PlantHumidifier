@@ -1104,7 +1104,7 @@
   (symbol (lib_id "Mechanical:MountingHole") (at 40.894 100.838 180) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 037cd9e2-c436-45ce-9701-802b6fe49823)
-    (property "Reference" "H?" (id 0) (at 43.688 99.5679 0)
+    (property "Reference" "H3" (id 0) (at 43.688 99.5679 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "MountingHole" (id 1) (at 43.688 102.1079 0)
@@ -1243,7 +1243,7 @@
   (symbol (lib_id "Mechanical:MountingHole") (at 40.894 90.678 180) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 86be4c77-a4f0-44de-87ea-a4911c4bffb9)
-    (property "Reference" "H?" (id 0) (at 43.688 89.4079 0)
+    (property "Reference" "H1" (id 0) (at 43.688 89.4079 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "MountingHole" (id 1) (at 43.688 91.9479 0)
@@ -1308,7 +1308,7 @@
   (symbol (lib_id "Mechanical:MountingHole") (at 40.894 95.758 180) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid 93a7b237-e301-4fc9-93dd-d06c3a220b65)
-    (property "Reference" "H?" (id 0) (at 43.688 94.4879 0)
+    (property "Reference" "H2" (id 0) (at 43.688 94.4879 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "MountingHole" (id 1) (at 43.688 97.0279 0)
@@ -1498,7 +1498,7 @@
   (symbol (lib_id "Mechanical:MountingHole") (at 40.894 105.918 180) (unit 1)
     (in_bom yes) (on_board yes) (fields_autoplaced)
     (uuid f2af4d8a-cfbc-4b49-99cf-2715ce367108)
-    (property "Reference" "H?" (id 0) (at 43.688 104.6479 0)
+    (property "Reference" "H4" (id 0) (at 43.688 104.6479 0)
       (effects (font (size 1.27 1.27)) (justify right))
     )
     (property "Value" "MountingHole" (id 1) (at 43.688 107.1879 0)
@@ -1650,17 +1650,17 @@
     (path "/2033c85f-5643-443c-9d46-84bb2e6addf0"
       (reference "C2") (unit 1) (value "100n") (footprint "Capacitor_SMD:C_0402_1005Metric")
     )
-    (path "/037cd9e2-c436-45ce-9701-802b6fe49823"
-      (reference "H?") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
-    )
     (path "/86be4c77-a4f0-44de-87ea-a4911c4bffb9"
-      (reference "H?") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
+      (reference "H1") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
     (path "/93a7b237-e301-4fc9-93dd-d06c3a220b65"
-      (reference "H?") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
+      (reference "H2") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
+    )
+    (path "/037cd9e2-c436-45ce-9701-802b6fe49823"
+      (reference "H3") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
     (path "/f2af4d8a-cfbc-4b49-99cf-2715ce367108"
-      (reference "H?") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
+      (reference "H4") (unit 1) (value "MountingHole") (footprint "MountingHole:MountingHole_2.2mm_M2")
     )
     (path "/f617cd1b-909f-4cbb-bc4d-a14076c52ab4"
       (reference "J1") (unit 1) (value "110990030") (footprint "Seeed_Connectors:SEEED_110990030")
