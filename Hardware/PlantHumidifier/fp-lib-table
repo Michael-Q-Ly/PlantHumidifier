@@ -1,3 +1,4 @@
 (fp_lib_table
   (lib (name "Seeed_Connectors")(type "KiCad")(uri "${KIPRJMOD}/Lib/Seeed_Connectors")(options "")(descr ""))
+  (lib (name "Ducky")(type "KiCad")(uri "${KIPRJMOD}/Lib/Custom")(options "")(descr ""))
 )
