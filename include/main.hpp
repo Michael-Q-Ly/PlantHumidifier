@@ -33,9 +33,8 @@
  * PINS 
  *-----------------------------------------------------------------------------*/
 
-#define ATOMIZER_PIN		15
-#define DHT_PIN			 0
-#define ENCODER_SW_PIN		16
+#define ATOMIZER_PIN		16
+#define DHT_PIN			13
 #define ENCODER_A_PIN		14
 #define ENCODER_B_PIN		12
 

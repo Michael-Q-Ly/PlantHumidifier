@@ -29,7 +29,6 @@ DHT dht(DHT_PIN, DHT_TYPE);
 
 extern Adafruit_SSD1306 display ;
 float humidity_set_point    = DEFAULT_HUMIDITY_SET_POINT ;
-s_encoder encoder {0, ENCODER_SWITCH_OFF} ;
 
 volatile bool turned_CW      = false ;
 volatile bool turned_CCW     = false ;
@@ -43,11 +42,8 @@ void reset_humidity_set_point(float humidity_set_point) ;
 void update_humidity_set_point(void) ;
 
 void setup() {
-	/* Serial.begin(BAUD_RATE) ; */
-
 	pinMode(ENCODER_A_PIN,  INPUT_PULLUP) ;
 	pinMode(ENCODER_B_PIN,  INPUT_PULLUP) ;
-	pinMode(ENCODER_SW_PIN, INPUT_PULLUP) ;
 	pinMode(ATOMIZER_PIN,   OUTPUT) ;
 
 	dht.begin();
@@ -55,7 +51,6 @@ void setup() {
 	init_oled() ;
 	/* display_oled_welcome() ; */
 	
-	encoder.pressed = (e_encoder_switch_state)digitalRead(ENCODER_A_PIN) ;
 	attachInterrupt(digitalPinToInterrupt(ENCODER_B_PIN), ISR_check_encoder, RISING) ;
 }
 
@@ -77,11 +72,7 @@ void loop() {
 		return ;
 	}
 
-	// If encoder button is pressed, reset to default humidity set point
-	if (digitalRead(ENCODER_SW_PIN) == ENCODER_SWITCH_ON) {
-		humidity_set_point = DEFAULT_HUMIDITY_SET_POINT ;
-	}
-
+	// Allow user to control humidity set point with encoder
 	update_humidity_set_point() ;
 
 	// If humidity goes beyond 0% or 100%, keep it at these upper and lower boundaries
@@ -92,15 +83,16 @@ void loop() {
 		humidity_set_point  = HUMIDITY_LOWER_THRESHOLD ;
 	}
 
+	// Clear and set up OLED to display DHT data and set point
 	setup_oled() ;
 	display_oled(humidity, temp_f, humidity_set_point) ;
 
-	// TODO: Case statements. If humidity is less than 50, do 10s. If 60, 5s. 70 = 3s
-	// TODO: Use non-blocking code like an ISR or millis to display new measurements
+	// Turn on atomizer if humidity is below set point
 	if (humidity < humidity_set_point) {
 		digitalWrite(ATOMIZER_PIN, ATOMIZER_ON) ;
 		debounce_humidifier = millis() ;
 	}
+	// Allow the atomizer to turn off
 	if (millis() - debounce_humidifier > DEBOUNCE_ATOMIZER) {
 		digitalWrite(ATOMIZER_PIN, ATOMIZER_OFF) ;
 	}
