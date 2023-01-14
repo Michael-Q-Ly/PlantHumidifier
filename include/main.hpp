@@ -33,9 +33,9 @@
  * PINS 
  *-----------------------------------------------------------------------------*/
 
-#define ATOMIZER_PIN		16
+#define ATOMIZER_PIN		12
 #define DHT_PIN			13
-#define ENCODER_A_PIN		14
-#define ENCODER_B_PIN		12
+#define ENCODER_A_PIN		16
+#define ENCODER_B_PIN		14
 
 #endif /* MAIN_HPP */
